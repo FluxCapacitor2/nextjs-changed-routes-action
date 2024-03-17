@@ -57582,10 +57582,10 @@ _changedPages_js__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.
  */
 async function run() {
     try {
-        const changedFiles = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("changedFiles").split(",");
+        const separator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("separator") ?? ",";
+        const changedFiles = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("changedFiles").split(separator);
         const excludedPaths = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("excludedPaths")?.split(",");
         const includedPaths = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("includedPaths")?.split(",");
-        const separator = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("separator") ?? ",";
         if (excludedPaths && includedPaths) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.warning("Both includedPaths and excludedPaths are set. Only includedPaths will be used.");
         }

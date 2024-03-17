@@ -11,17 +11,22 @@ branding:
 # Define your inputs here.
 inputs:
   separator:
-    description: "The separator used to split the changedFiles input into an array."
+    description:
+      "The separator used to split the changedFiles input into an array."
     default: ","
-  
+
   excludedPaths:
-    description: "Specify a list of paths to exclude from file tracing. Mutually exclusive with includePaths."
+    description:
+      "Specify a list of paths to exclude from file tracing. Mutually exclusive
+      with includePaths."
     required: false
-  
-  includePaths:
-    description: "Specify a list to of paths include in file tracing. Mutually exclusive with excludedPaths."
+
+  includedPaths:
+    description:
+      "Specify a list to of paths include in file tracing. Mutually exclusive
+      with excludedPaths."
     required: false
-  
+
   changedFiles:
     description:
       "A list of files that were changed as a result of the current commit or
@@ -31,9 +36,10 @@ inputs:
 # Define your outputs here.
 outputs:
   changedRoutes:
-    description: 
+    description:
       "A list of changed routes for the current commit or pull request.
-      Formatted as relative URL paths, joined by the separator specified in the `separator` input."
+      Formatted as relative URL paths, joined by the separator specified in the
+      `separator` input."
 
 runs:
   using: node20
