@@ -15,16 +15,17 @@ inputs:
       "The separator used to split the changedFiles input into an array."
     default: ","
 
-  excludedPaths:
-    description:
-      "Specify a list of paths to exclude from file tracing. Mutually exclusive
-      with includePaths."
-    required: false
-
   includedPaths:
     description:
-      "Specify a list to of paths include in file tracing. Mutually exclusive
-      with excludedPaths."
+      "Specify a list of globs to include in file tracing, separated by
+      newlines. These globs should only match application code, like your `app/`
+      directory and an additional `components` directory. Using more specific
+      globs will increase performance and reduce the number of files that need
+      to be traced."
+    default: |
+      src/**
+      app/**
+      components/**
     required: false
 
   changedFiles:

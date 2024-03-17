@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import micromatch from "micromatch";
 import { findChangedPages } from "./changedPages.js";
 
 /**
@@ -9,18 +10,17 @@ export async function run(): Promise<void> {
   try {
     const separator = core.getInput("separator") ?? ",";
     const changedFiles = core.getInput("changedFiles").split(separator);
-    const excludedPaths = core.getInput("excludedPaths")?.split(",");
-    const includedPaths = core.getInput("includedPaths")?.split(",");
 
-    if (excludedPaths && includedPaths) {
-      core.warning(
-        "Both includedPaths and excludedPaths are set. Only includedPaths will be used."
-      );
-    }
+    const includedPaths = core
+      .getInput("includedPaths")
+      ?.trim()
+      ?.split("\n")
+      ?.map((item) => item.trim());
 
-    const changedRoutes = await findChangedPages(changedFiles, (file) => {
-      return includedPaths.includes(file);
-    });
+    const changedRoutes = await findChangedPages(
+      changedFiles,
+      (file) => !micromatch.isMatch(file, includedPaths)
+    );
 
     core.setOutput("changedRoutes", changedRoutes.join(separator));
   } catch (error) {
