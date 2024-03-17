@@ -22,6 +22,11 @@ export async function run(): Promise<void> {
       (file) => !micromatch.isMatch(file, includedPaths)
     );
 
+    if (changedRoutes.length > 0) {
+      core.info(`Changed routes:\n${changedRoutes.join("\n")}`);
+    } else {
+      core.info("No changed routes found.");
+    }
     core.setOutput("changedRoutes", changedRoutes.join(separator));
   } catch (error) {
     // Fail the workflow run if an error occurs
@@ -29,5 +34,9 @@ export async function run(): Promise<void> {
   }
 }
 
+core.info("Finding changed routes...");
+
 // Start the action
 await run();
+
+core.info("Done!");

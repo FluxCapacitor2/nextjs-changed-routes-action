@@ -60289,6 +60289,12 @@ async function run() {
             ?.split("\n")
             ?.map((item) => item.trim());
         const changedRoutes = await (0,_changedPages_js__WEBPACK_IMPORTED_MODULE_2__/* .findChangedPages */ .F)(changedFiles, (file) => !micromatch__WEBPACK_IMPORTED_MODULE_1___default().isMatch(file, includedPaths));
+        if (changedRoutes.length > 0) {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Changed routes:\n${changedRoutes.join("\n")}`);
+        }
+        else {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("No changed routes found.");
+        }
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("changedRoutes", changedRoutes.join(separator));
     }
     catch (error) {
@@ -60297,8 +60303,10 @@ async function run() {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message);
     }
 }
+_actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Finding changed routes...");
 // Start the action
 await run();
+_actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Done!");
 
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } }, 1);

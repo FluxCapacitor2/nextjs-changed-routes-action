@@ -55,9 +55,10 @@ jobs:
         id: changed-routes
         uses: FluxCapacitor2/nextjs-changed-routes-action@main
         with:
-          includePaths: ["app/"]
-          # or, if you're using the `src` directory:
-          # includePaths: ["src/app/"]
+          includedPaths: |
+            src/**
+            app/**
+            components/**
           changedFiles: ${{ steps.changed-files.outputs.all_modified_files }}
       - name: Output changed routes
         run: echo "${{ steps.changed-routes.outputs.changedRoutes }}
