@@ -7,10 +7,10 @@ import { findChangedPages } from "./changedPages.js";
  */
 export async function run(): Promise<void> {
   try {
-    const changedFiles = core.getInput("changedFiles").split(",");
+    const separator = core.getInput("separator") ?? ",";
+    const changedFiles = core.getInput("changedFiles").split(separator);
     const excludedPaths = core.getInput("excludedPaths")?.split(",");
     const includedPaths = core.getInput("includedPaths")?.split(",");
-    const separator = core.getInput("separator") ?? ",";
 
     if (excludedPaths && includedPaths) {
       core.warning(

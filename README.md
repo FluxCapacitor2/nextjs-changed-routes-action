@@ -17,9 +17,9 @@ using `@vercel/nft`, with intermediate TypeScript compilation done with
 This action has been tested with Next.js 14 and the `app` directory. It may work
 with Next.js 13.
 
-**This project does not support the `pages` directory.**
-
 JavaScript and TypeScript pages are supported, but MDX is not.
+
+**This project does not support the `pages` directory.**
 
 ## Example Workflow
 
@@ -42,17 +42,23 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-      - run: npm install
+        run: npm ci
       - name: Build
-        run: npx next experimental-compile # Build Next.js without pregenerating static pages
+        # Build Next.js without pregenerating static pages
+        run: npx next experimental-compile
       - name: Find changed files
         id: changed-files
         uses: tj-actions/changed-files@v43
         with:
           separator: ","
       - name: Identify changed routes
+        id: changed-routes
         uses: FluxCapacitor2/nextjs-changed-routes-action@main
         with:
           includePaths: ["app/"]
+          # or, if you're using the `src` directory:
+          # includePaths: ["src/app/"]
           changedFiles: ${{ steps.changed-files.outputs.all_modified_files }}
+      - name: Output changed routes
+        run: echo "${{ steps.changed-routes.outputs.changedRoutes }}
 ```
