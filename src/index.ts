@@ -1,7 +1,33 @@
-/**
- * The entrypoint for the action.
- */
-import { run } from './main'
+import * as core from "@actions/core";
+import { findChangedPages } from "./changedPages.js";
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-run()
+/**
+ * The main function for the action.
+ * @returns {Promise<void>} Resolves when the action is complete.
+ */
+export async function run(): Promise<void> {
+  try {
+    const changedFiles = core.getInput("changedFiles").split(",");
+    const excludedPaths = core.getInput("excludedPaths")?.split(",");
+    const includedPaths = core.getInput("includedPaths")?.split(",");
+    const separator = core.getInput("separator") ?? ",";
+
+    if (excludedPaths && includedPaths) {
+      core.warning(
+        "Both includedPaths and excludedPaths are set. Only includedPaths will be used."
+      );
+    }
+
+    const changedRoutes = await findChangedPages(changedFiles, (file) => {
+      return includedPaths.includes(file);
+    });
+
+    core.setOutput("changedRoutes", changedRoutes.join(separator));
+  } catch (error) {
+    // Fail the workflow run if an error occurs
+    if (error instanceof Error) core.setFailed(error.message);
+  }
+}
+
+// Start the action
+await run();

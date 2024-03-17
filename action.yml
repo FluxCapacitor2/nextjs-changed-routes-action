@@ -1,23 +1,27 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Next.js Changed Routes"
+description:
+  "A GitHub Action that outputs a list of changed routes for a commit or pull
+  request."
+author: "FluxCapacitor2"
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: "edit"
+  color: "green"
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  changedFiles:
+    description:
+      "A list of files that were changed as a result of the current commit or
+      pull request. This should be the output of @tj-actions/changed-files."
     required: true
-    default: '1000'
 
 # Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  changedRoutes:
+    description:
+      "A list of changed routes for the current commit or pull request.
+      Formatted as relative URL paths."
 
 runs:
   using: node20
