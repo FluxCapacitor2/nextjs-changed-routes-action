@@ -28,6 +28,12 @@ inputs:
       components/**
     required: false
 
+  pageExtensions:
+    description:
+      "A list of file extensions used by Next.js pages, separated by the
+      specified `separator`."
+    default: "js,jsx,ts,tsx"
+
   changedFiles:
     description:
       "A list of files that were changed as a result of the current commit or

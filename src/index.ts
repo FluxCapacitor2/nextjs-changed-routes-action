@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import micromatch from "micromatch";
-import { findChangedPages } from "./changedPages.js";
+import { findChangedPages } from "./changedPages";
 
 /**
  * The main function for the action.
@@ -11,6 +11,8 @@ export async function run(): Promise<void> {
     const separator = core.getInput("separator") ?? ",";
     const changedFiles = core.getInput("changedFiles").split(separator);
 
+    const pageExtensions = core.getInput("pageExtensions").split(separator);
+
     const includedPaths = core
       .getInput("includedPaths")
       ?.trim()
@@ -19,6 +21,7 @@ export async function run(): Promise<void> {
 
     const changedRoutes = await findChangedPages(
       changedFiles,
+      pageExtensions,
       (file) => !micromatch.isMatch(file, includedPaths)
     );
 
@@ -30,6 +33,7 @@ export async function run(): Promise<void> {
     core.info("Done!");
     core.setOutput("changedRoutes", changedRoutes.join(separator));
   } catch (error) {
+    core.error(`An error occurred while finding changed routes: ${error}`);
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message);
   }

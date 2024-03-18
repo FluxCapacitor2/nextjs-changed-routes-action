@@ -1,6 +1,6 @@
-// @ts-check
+import core from "@actions/core";
 import { readFile } from "fs/promises";
-import { trace } from "./nft.js";
+import { trace } from "./nft";
 
 /**
  * Returns a list of routes affected by the changes in the given list of files.
@@ -8,6 +8,7 @@ import { trace } from "./nft.js";
  */
 export async function findChangedPages(
   changedFiles: string[],
+  pageExtensions: string[],
   ignore: (file: string) => boolean
 ): Promise<string[]> {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -32,7 +33,13 @@ export async function findChangedPages(
       // Next.js renames this one in the route manifest
       fileName = "/not-found";
     }
-    const result = await trace(fileName, ignore);
+    const result = await trace(fileName, pageExtensions, ignore);
+    if (!result) {
+      core.warning(
+        `Could not trace page ${path} because its file name, ${fileName}, could not be resolved.`
+      );
+      continue;
+    }
     const matches = Array.from(result.fileList).filter((it) =>
       changedFiles.includes(it)
     );
