@@ -60295,6 +60295,7 @@ async function run() {
         else {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("No changed routes found.");
         }
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Done!");
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput("changedRoutes", changedRoutes.join(separator));
     }
     catch (error) {
@@ -60305,11 +60306,10 @@ async function run() {
 }
 _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Finding changed routes...");
 // Start the action
-await run();
-_actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Done!");
+run();
 
 __webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } }, 1);
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 

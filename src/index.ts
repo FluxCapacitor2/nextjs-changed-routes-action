@@ -27,6 +27,7 @@ export async function run(): Promise<void> {
     } else {
       core.info("No changed routes found.");
     }
+    core.info("Done!");
     core.setOutput("changedRoutes", changedRoutes.join(separator));
   } catch (error) {
     // Fail the workflow run if an error occurs
@@ -37,6 +38,4 @@ export async function run(): Promise<void> {
 core.info("Finding changed routes...");
 
 // Start the action
-await run();
-
-core.info("Done!");
+run();
