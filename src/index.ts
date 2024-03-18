@@ -11,13 +11,25 @@ export async function run(): Promise<void> {
     const separator = core.getInput("separator") ?? ",";
     const changedFiles = core.getInput("changedFiles").split(separator);
 
-    const pageExtensions = core.getInput("pageExtensions").split(separator);
+    const pageExtensionsInput = core
+      .getInput("pageExtensions")
+      ?.split(separator);
 
-    const includedPaths = core
+    const pageExtensions =
+      pageExtensionsInput.length > 0
+        ? pageExtensionsInput
+        : ["js", "jsx", "ts", "tsx"];
+
+    const includedPathsInput = core
       .getInput("includedPaths")
       ?.trim()
       ?.split("\n")
       ?.map((item) => item.trim());
+
+    const includedPaths =
+      includedPathsInput.join("").length > 0
+        ? includedPathsInput
+        : ["src/**", "app/**", "components/**"];
 
     const changedRoutes = await findChangedPages(
       changedFiles,

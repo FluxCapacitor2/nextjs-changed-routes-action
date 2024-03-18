@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import { readFile } from "fs/promises";
 import { trace } from "./nft";
 
@@ -27,13 +27,15 @@ export async function findChangedPages(
 
   const pageSet: Record<string, string[]> = {};
 
+  const appRoot = "src/app"; // TODO make configurable
+
   // eslint-disable-next-line prefer-const
   for (let [fileName, path] of routes) {
     if (fileName === "/_not-found") {
       // Next.js renames this one in the route manifest
       fileName = "/not-found";
     }
-    const result = await trace(fileName, pageExtensions, ignore);
+    const result = await trace(appRoot, fileName, pageExtensions, ignore);
     if (!result) {
       core.warning(
         `Could not trace page ${path} because its file name, ${fileName}, could not be resolved.`

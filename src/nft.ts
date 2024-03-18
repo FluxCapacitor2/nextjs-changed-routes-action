@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 import { nodeFileTrace, resolve } from "@vercel/nft";
 import esbuild from "esbuild";
 import { existsSync } from "node:fs";
@@ -8,15 +8,18 @@ import { resolve as pathResolve } from "node:path";
 const nftCache = Object.create(null);
 
 export async function trace(
+  appRoot: string,
   fileName: string,
   pageExtensions: string[],
   ignore: (file: string) => boolean
 ): Promise<Awaited<ReturnType<typeof nodeFileTrace>> | undefined> {
-  const fullFileName = await findFile(fileName, pageExtensions);
+  const fullFileName = await findFile(appRoot, fileName, pageExtensions);
 
   if (!fullFileName) {
     // The file couldn't be resolved
-    core.warning(`Couldn't resolve file ${fileName}`);
+    core.warning(
+      `Couldn't resolve file ${fileName} from app root ${appRoot}. Is the Next.js app in a different directory?`
+    );
     return undefined;
   }
 
@@ -48,12 +51,14 @@ export async function trace(
 }
 
 async function findFile(
+  appRoot: string,
   fileName: string,
   pageExtensions: string[]
 ): Promise<string | undefined> {
   for (const extension of pageExtensions) {
-    if (existsSync(pathResolve(`${fileName}${extension}`))) {
-      return fileName + extension;
+    const fullPath = pathResolve(`${appRoot}${fileName}.${extension}`);
+    if (existsSync(fullPath)) {
+      return fullPath;
     }
   }
 }

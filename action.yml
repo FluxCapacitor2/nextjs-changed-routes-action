@@ -40,6 +40,11 @@ inputs:
       pull request. This should be the output of @tj-actions/changed-files."
     required: true
 
+  appRoot:
+    description: "The directory that contains all of your routes. Typically 'app/' or 'src/app/'."
+    default: "app/"
+    required: true
+
 # Define your outputs here.
 outputs:
   changedRoutes:
