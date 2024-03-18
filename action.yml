@@ -38,7 +38,7 @@ inputs:
     description:
       "A list of files that were changed as a result of the current commit or
       pull request. This should be the output of @tj-actions/changed-files."
-    required: true
+    required: false
 
   appRoot:
     description: "The directory that contains all of your routes. Typically 'app/' or 'src/app/'."
@@ -52,7 +52,22 @@ outputs:
       "A list of changed routes for the current commit or pull request.
       Formatted as relative URL paths, joined by the separator specified in the
       `separator` input."
+    value: "${{ steps.changedRoutes.outputs.changedRoutes }}"
+
+# runs:
+#   using: node20
+#   main: dist/index.js
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: composite
+  steps:
+    - name: Find changed files
+      uses: tj-actions/changed-files@v43
+      if: ${{ ! inputs.changedFiles }}
+      id: changedFiles
+      with:
+        separator: ","
+    - name: Trace changed routes
+      id: changedRoutes
+      run: node ./dist/index.js
+      shell: bash

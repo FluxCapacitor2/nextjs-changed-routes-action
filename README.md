@@ -14,12 +14,31 @@ using `@vercel/nft`, with intermediate TypeScript compilation done with
 
 ## Compatibility
 
-This action has been tested with Next.js 14 and the `app` directory. It may work
-with Next.js 13.
+- This action has been tested with Next.js 14 and the `app` directory. It may
+  also work with Next.js 13.
+- Both JavaScript and TypeScript pages are supported.
+- **This project does not support the `pages` directory.**
 
-JavaScript and TypeScript pages are supported, but MDX is not.
+## Inputs
 
-**This project does not support the `pages` directory.**
+- `includedPaths`: A list of globs to include in file tracing, separated by
+  newlines. These globs should only match application code, like your `app/`
+  directory and an additional `components` directory. Using more specific globs
+  will increase performance and reduce the number of files that need to be
+  traced.
+- `separator`: A separator to delimit the remaining inputs. Defaults to a comma
+  (`,`).
+- `changedFiles`: A list of files that were changed as a result of the current
+  commit or pull request. This input should be separated by the specified
+  `separator`.
+- `appRoot`: The directory that contains all of your routes. Typically `app/` or
+  `src/app/`. Defaults to `app/`.
+
+## Outputs
+
+- `changedRoutes`: A list of routes that were affected by the commit or pull
+  request's file changes. This output is separated by the specified `separator`
+  input.
 
 ## Example Workflow
 
