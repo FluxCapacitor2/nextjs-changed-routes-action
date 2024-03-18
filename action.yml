@@ -41,7 +41,9 @@ inputs:
     required: false
 
   appRoot:
-    description: "The directory that contains all of your routes. Typically 'app/' or 'src/app/'."
+    description:
+      "The directory that contains all of your routes. Typically 'app/' or
+      'src/app/'."
     default: "app/"
     required: true
 
@@ -53,10 +55,6 @@ outputs:
       Formatted as relative URL paths, joined by the separator specified in the
       `separator` input."
     value: "${{ steps.changedRoutes.outputs.changedRoutes }}"
-
-# runs:
-#   using: node20
-#   main: dist/index.js
 
 runs:
   using: composite
@@ -71,3 +69,11 @@ runs:
       id: changedRoutes
       run: node ${{ github.action_path }}/dist/index.js
       shell: bash
+      with:
+        appRoot: ${{ inputs.appRoot }}
+        separator: ${{ inputs.separator }}
+        changedFiles:
+          ${{ inputs.changedFiles ||
+          steps.changedFiles.outputs.all_modified_files }}
+        includedPaths: ${{ inputs.includedPaths }}
+        pageExtensions: ${{ inputs.pageExtensions }}
