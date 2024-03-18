@@ -69,11 +69,11 @@ runs:
       id: changedRoutes
       run: node ${{ github.action_path }}/dist/index.js
       shell: bash
-      with:
-        appRoot: ${{ inputs.appRoot }}
-        separator: ${{ inputs.separator }}
-        changedFiles:
+      env:
+        INPUT_APPROOT: ${{ inputs.appRoot }}
+        INPUT_SEPARATOR: ${{ inputs.separator }}
+        INPUT_CHANGEDFILES:
           ${{ inputs.changedFiles ||
           steps.changedFiles.outputs.all_modified_files }}
-        includedPaths: ${{ inputs.includedPaths }}
-        pageExtensions: ${{ inputs.pageExtensions }}
+        INPUT_INCLUDEDPATHS: ${{ inputs.includedPaths }}
+        INPUT_PAGEEXTENSIONS: ${{ inputs.pageExtensions }}
