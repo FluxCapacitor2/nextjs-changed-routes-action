@@ -57984,7 +57984,7 @@ const nft_1 = __nccwpck_require__(3794);
  * Returns a list of routes affected by the changes in the given list of files.
  * Uses Next.js's output file tracing to find all affected pages.
  */
-async function findChangedPages(changedFiles, pageExtensions, ignore) {
+async function findChangedPages(appRoot, changedFiles, pageExtensions, ignore) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const entries = Object.entries(JSON.parse((await (0, promises_1.readFile)(".next/app-path-routes-manifest.json")).toString()));
     const routes = entries.filter(([fileName, path]) => !fileName.endsWith("/route") && // Exclude route handlers
@@ -57992,7 +57992,6 @@ async function findChangedPages(changedFiles, pageExtensions, ignore) {
         !path.match(/\(\.+\)/) // Exclude intercepting routes
     );
     const pageSet = {};
-    const appRoot = "src/app"; // TODO make configurable
     // eslint-disable-next-line prefer-const
     for (let [fileName, path] of routes) {
         if (fileName === "/_not-found") {
@@ -58087,6 +58086,7 @@ async function run() {
     try {
         const separator = core.getInput("separator") ?? ",";
         const changedFiles = core.getInput("changedFiles").split(separator);
+        const appRoot = core.getInput("appRoot");
         const pageExtensionsInput = core
             .getInput("pageExtensions")
             ?.split(separator);
@@ -58101,7 +58101,7 @@ async function run() {
         const includedPaths = includedPathsInput.join("").length > 0
             ? includedPathsInput
             : ["src/**", "app/**", "components/**"];
-        const changedRoutes = await (0, changedPages_1.findChangedPages)(changedFiles, pageExtensions, (file) => !micromatch_1.default.isMatch(file, includedPaths));
+        const changedRoutes = await (0, changedPages_1.findChangedPages)(appRoot.length === 0 ? "app/" : appRoot, changedFiles, pageExtensions, (file) => !micromatch_1.default.isMatch(file, includedPaths));
         if (changedRoutes.length > 0) {
             core.info(`Changed routes:\n${changedRoutes.join("\n")}`);
         }

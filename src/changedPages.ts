@@ -7,6 +7,7 @@ import { trace } from "./nft";
  * Uses Next.js's output file tracing to find all affected pages.
  */
 export async function findChangedPages(
+  appRoot: string,
   changedFiles: string[],
   pageExtensions: string[],
   ignore: (file: string) => boolean
@@ -26,8 +27,6 @@ export async function findChangedPages(
   );
 
   const pageSet: Record<string, string[]> = {};
-
-  const appRoot = "src/app"; // TODO make configurable
 
   // eslint-disable-next-line prefer-const
   for (let [fileName, path] of routes) {

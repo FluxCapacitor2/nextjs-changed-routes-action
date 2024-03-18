@@ -10,6 +10,7 @@ export async function run(): Promise<void> {
   try {
     const separator = core.getInput("separator") ?? ",";
     const changedFiles = core.getInput("changedFiles").split(separator);
+    const appRoot = core.getInput("appRoot");
 
     const pageExtensionsInput = core
       .getInput("pageExtensions")
@@ -32,6 +33,7 @@ export async function run(): Promise<void> {
         : ["src/**", "app/**", "components/**"];
 
     const changedRoutes = await findChangedPages(
+      appRoot.length === 0 ? "app/" : appRoot,
       changedFiles,
       pageExtensions,
       (file) => !micromatch.isMatch(file, includedPaths)
