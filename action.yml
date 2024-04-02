@@ -60,7 +60,7 @@ runs:
   using: composite
   steps:
     - name: Find changed files
-      uses: tj-actions/changed-files@v43
+      uses: tj-actions/changed-files@v44
       if: ${{ ! inputs.changedFiles }}
       id: changedFiles
       with:
