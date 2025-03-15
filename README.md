@@ -67,7 +67,7 @@ jobs:
         run: npx next experimental-compile
       - name: Find changed files
         id: changed-files
-        uses: tj-actions/changed-files@v43
+        uses: tj-actions/changed-files@9200e69727eb73eb060652b19946b8a2fdfb654b
         with:
           separator: ","
       - name: Identify changed routes
